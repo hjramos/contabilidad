@@ -1,14 +1,14 @@
-/*****************************GLBALAN2.P***************************************\
-*   Autor : Rodolfo Garc¡a C rdenas (enero de 1995)                            *
+/********************************************************************\
+*   Autor : RG 1995                            *
 * Objetivo: Listar el saldo  inicial, movimientos y saldo final de las cuentas *
-*           por per¡odo.                                                       *
+*           por perÂ¡odo.                                                       *
 * Modif.  : EMS 01/98.  Cambio al formato del reporte.
 
   MODIF.  : LMMA AGOSTO 2000 CAMBIO A VERSION 9 (CALCULO DE CARGOS Y ABONOS)
   Modif.  : EMS-1 Sustituir etiquetas por incluidos (27 Feb 2003)
   Modif.  : EMS-2 Agregar manejo de Moneda Base (20 Mar 2003)
 
-  Modif.  : Luis Manuel Maury Arcega 
+  Modif.  : LMMA 
   Fecha   : 28 de Junio 2005
   Objeto  : Manejo de multientidades 
   Clave   : LMMA-1
@@ -57,8 +57,8 @@ def var sb_sdofctd as dec decimals 2 format "->>>>,>>>,>>>.99" no-undo.
 def var tipo like ac_mstr.ac_type no-undo.     /* EMS 01/96 */
 def var ent like en_entity /*label "Entidad"*/ init "" 
                      /** LMMA-1 *** format "xx" ****/ no-undo.
-def var per like acd_per /*label "Per¡odo"*/ format "99" no-undo.
-def var an  like acd_year /*label "A¤o" */    format "9999" no-undo.
+def var per like acd_per /*label "PerÂ¡odo"*/ format "99" no-undo.
+def var an  like acd_year /*label "AÂ¤o" */    format "9999" no-undo.
 def var swsub as int no-undo.
 def var fechai as date.
 def var fechaf as date.
@@ -115,10 +115,10 @@ repeat:
               {gr0027.i} /*"Entidad Invalida"*/)    /** LMMA-1 **/
               HELP {gr0879.i}                       /** LMMA-1 **/
               an       colon 25 label {gr0024.i} 
-              validate(an > 1993, {gr0044.i} /*"A¤o Inv lido"*/)
+              validate(an > 1993, {gr0044.i} /*"AÂ¤o InvÂ lido"*/)
               per      colon 25 label {gr0023.i}
               validate(per > 0 and per < 13, {gr0010.i}
-              /*"Per¡odo debe ser del 1 al 12" */)
+              /*"PerÂ¡odo debe ser del 1 al 12" */)
               ctai     colon 25    ctaf  colon 60
               sctai    colon 25    sctaf colon 60
               cci      colon 25    ccf   colon 60
@@ -186,7 +186,7 @@ repeat:
   assign wmndbase = gl_base_curr.                      /** EMS-2 **/
   
 
-  /*  VALIDAR A¥O Y PERIODO CON EL CALENDARIO CONTABLE */
+  /*  VALIDAR AÂ¥O Y PERIODO CON EL CALENDARIO CONTABLE */
   find glc_cal where glc_year = an and glc_per = per no-lock no-error.
    if available glc_cal then do:
       fechai = glc_start.
@@ -291,7 +291,7 @@ repeat:
                        (acd_entity = ent 
 /** LMMA-1 **/          OR ent = v_inclu):
 
-/* SOLAMENTE SELECCIONA REGISTROS DE PERIODO DOCE, A¥O ANTERIOR */
+/* SOLAMENTE SELECCIONA REGISTROS DE PERIODO DOCE, AÂ¥O ANTERIOR */
 /*              if acd_year = an - 1 and
                    acd_per >= 1 and acd_per <= 11 then next.
 
@@ -460,7 +460,7 @@ repeat:
   hDoc:save("file",xmlFilename). /* HSM */
   
   os-command zip value(zipFilename) value(xmlFilename).
-  os-command "Envio de zip y xml" | mail -a value(zipFilename) -a value(xmlFilename) jramos@hendrickson-intl.com.
+  os-command "Envio de zip y xml" | mail -a value(zipFilename) -a value(xmlFilename) my@email.com.
   
   
    end. /* IF AVAILABLE GLC_CAL*/
@@ -468,7 +468,7 @@ repeat:
    else do:
     bell.
     disp {gr0139.i}
- /*   "COMBINACION DE PERIODO Y AÑO NO EXISTEN EN EL CALENDARIO CONTABLE" */
+ /*   "COMBINACION DE PERIODO Y AÃ‘O NO EXISTEN EN EL CALENDARIO CONTABLE" */
     with frame z color message row 19 no-attr-space.
    end. /*ELSE DO*/
   {finfin.i}
